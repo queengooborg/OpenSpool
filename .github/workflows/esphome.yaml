@@ -1,3 +1,4 @@
+---
 name: Build ESPHome
 
 on:
@@ -6,7 +7,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+*'
 
 # Prevent parallel runs if accidentially pushing multiple tags in quick succession
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
@@ -51,12 +52,12 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
-      
+
       - name: Create empty secrets file
         run: |
           touch firmware/secrets.yaml
           touch firmware/conf.d/secrets.yaml
-      
+
       - name: Setup yq
         uses: vegardit/gha-setup-yq@v1
 
@@ -92,7 +93,7 @@ jobs:
           release-url: https://openspool.io/firmware
           complete-manifest: false
         if: matrix.target == 'esp32s3'
-      
+
       - name: ls
         run: |
           ls -la
@@ -137,9 +138,7 @@ jobs:
           path: downloaded-artifacts
 
       - name: list artifacts
-        run: |
-          ls -ial 
-
+        run: "ls -ial \n    #magic___^_^___line\n"
       - name: Purge local firmware
         run: |
           rm -f docs/firmware/*.json || true
@@ -214,11 +213,11 @@ jobs:
           files: |
             release/**/*
 
-      # - name: Release Latest
-      #   uses: "marvinpinto/action-automatic-releases@latest"
-      #   with:
-      #     repo_token: "${{ secrets.GITHUB_TOKEN }}"
-      #     automatic_release_tag: "latest"
-      #     prerelease: false
-      #     files: |
-      #       release/**/*
+    # - name: Release Latest
+    #   uses: "marvinpinto/action-automatic-releases@latest"
+    #   with:
+    #     repo_token: "${{ secrets.GITHUB_TOKEN }}"
+    #     automatic_release_tag: "latest"
+    #     prerelease: false
+    #     files: |
+    #       release/**/*
